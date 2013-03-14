@@ -61,8 +61,8 @@ module AnimeForce
     }.reverse
   end
   
-  def self.get(url, path, chapters)
-    chapters.each { |i|
+  def self.get(url, path, from, to)
+    from.upto(to) { |i|
       begin
         ref = "#{url}it/0/#{i}/"
         filename = File.join(path, "#{i}.zip")
@@ -104,27 +104,29 @@ OptionParser.new { |o|
     exit
   }
   
-  o.on('-g', '--get MANGA,PATH,[CHAPTERS]', Array, 'Get the requested chapters and save them in PATH') { |ary|
+  o.on('-g', '--get MANGA,PATH,[FROM],[TO]', Array, 'Get the requested range chapters and save them in PATH') { |ary|
     abort 'Name of the manga and path where to save it is required' if ary.count < 2
-    manga    = ary[0]
-    path     = ary[1]
+    manga = ary[0]
+    path  = ary[1]
     
     release = AnimeForce.list.select { |v| v[:name] == manga }
     
     abort 'Not found.' if     release.empty?
     Dir.mkdir(path)    unless File.directory? path
     
-    options[:get] = ary.length > 2 ? [ release, path, ary[2..-1] ] : [ release, path ]
+    options[:get] = ary.length == 4 ? [ release, path, ary[2], ary[3] ] : [ release, path ]
   }
 }.parse!
 
 if options[:get]
   if options[:get].count == 2
-    cookie = AnimeForce.get_cookie(options[:get][0].first[:url])
-    options[:get] << AnimeForce.count_chapters(options[:get][0].first[:url], cookie)
+    cookie = AnimeForce.get_cookie options[:get][0].first[:url]
+    count = AnimeForce.count_chapters options[:get][0].first[:url], cookie
+    options[:get] << count.first
+    options[:get] << count.last
   end
   
-  AnimeForce.get options[:get][0].first[:url].gsub(/series/, 'download'), options[:get][1], options[:get][2]
+  AnimeForce.get options[:get][0].first[:url].gsub(/series/, 'download'), options[:get][1], options[:get][2], options[:get][3] 
 else
   puts help
 end
