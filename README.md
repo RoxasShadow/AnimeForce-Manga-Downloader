@@ -2,11 +2,11 @@
 
 `ruby animeforce.rb -l` Show a list with all the manga
 
-`ruby animeforce.rb -c "Soul Eater"` Show the available chapters for Soul Eater
+`ruby animeforce.rb -c "Nozoki Ana"` Show the available chapters for Nozoki Ana
 
-`ruby animeforce.rb -g "Soul Eater","C:\\Manga\\Soul Eater\\"` Download all the chapter of Soul Eater in C:\Manga\Soul Eater\
+`ruby animeforce.rb -g "Nozoki Ana","C:\\Manga\\Nozoki Ana\\"` Download all the chapter of Soul Eater in C:\Manga\Nozoki Ana\
 
-`ruby animeforce.rb -g "Soul Eater","C:\\Manga\\Soul Eater\\",100,101,102` Download the chapters 100, 101 and 102 of Soul Eater in C:\Manga\Soul Eater\
+`ruby animeforce.rb -g "Nozoki Ana","C:\\Manga\\Nozoki Ana\\",1,12` Download the first 12 chapters of Nozoki Ana in C:\Manga\Nozoki Ana\
 
 For -c and -l you need Nokogiri gem, so
 
